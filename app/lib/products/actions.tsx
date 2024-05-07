@@ -55,13 +55,13 @@ export async function createProduct(prevState: State, formData: FormData) {
 
     try {
 
-        await executeQuery(`
-            INSERT INTO pos_items_detail (name, cost_price, unit_price)
-            VALUES ('${name}', '${cost_price}', '${unit_price}')
+       const items = await executeQuery(`
+            INSERT INTO pos_items_detail (name, cost_price, unit_price, quantity, avg_cost, unit_id, inventory_acc_code, wip_acc_code, company_id)
+            VALUES ('${name}', '${cost_price}', '${unit_price}', 0, 0, 0, 0, 0, 1)
           `);
 
     } catch (error) {
-        return {
+          return {
             message: 'Database Error: Failed to Create Product.',
         };
     }

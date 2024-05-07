@@ -9,7 +9,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 //     noStore();
 //     try {
 //         type results = Array<any>;
-//         const [results] = await executeQuery.execute("select * from pos_Suppliers");
+//         const [results] = await executeQuery.execute("select * from pos_supplier");
 //         //db.end();
 //         console.log(results);
 //         return results;
@@ -26,8 +26,8 @@ export async function fetchSuppliers() {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     // console.log('Fetched data after 3 second...');
 
-    const results = await executeQuery<SuppliersTable>('SELECT * FROM pos_suppliers');
-    //console.log(results);
+    const results = await executeQuery<SuppliersTable>('SELECT * FROM pos_supplier');
+    console.log(results);
     return results;
   } catch (error) {
     console.error('Database Error:', error);
@@ -44,7 +44,7 @@ export async function fetchSupplierById(id: string = "0") {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     // console.log('Fetched data after 3 second...');
 
-    const results = await executeQuery<SuppliersTable>(`SELECT name,email,contact_no,address,status FROM pos_suppliers WHERE id = ${id}`);
+    const results = await executeQuery<SuppliersTable>(`SELECT name,email,contact_no,address,status FROM pos_supplier WHERE id = ${id}`);
     //console.log(id);
     // return results;
 
@@ -67,11 +67,12 @@ export async function fetchSuppliersPages(query: string) {
   noStore();
   try {
     const count: any = await executeQuery(`SELECT COUNT(*) as count
-      FROM pos_suppliers
+      FROM pos_supplier
       WHERE
         name LIKE '%${query}%'
         
     `);
+    console.log(count);
 
     const totalPages = Math.ceil(Number(count[0].count) / ITEMS_PER_PAGE);
     //console.log(totalPages);
@@ -92,7 +93,7 @@ export async function fetchFilteredSuppliers(
     const Suppliers = await executeQuery<SuppliersTable>(`
         SELECT
           *
-        FROM pos_suppliers
+        FROM pos_supplier
         WHERE
             name LIKE '%${query}%'
             ORDER BY id DESC
